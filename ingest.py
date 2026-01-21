@@ -16,7 +16,7 @@ for file in os.listdir(PDF_FOLDER):
 
 # Split text into chunks
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
+    chunk_size=300,
     chunk_overlap=50
 )
 chunks = text_splitter.split_documents(documents)
