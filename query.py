@@ -4,19 +4,18 @@ from langchain_community.llms import Ollama
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
-# Load embeddings (same as ingest.py)
+
 embeddings = OllamaEmbeddings(model="nomic-embed-text")
 
-# Load existing vector DB
+
 db = Chroma(
     persist_directory="chroma_db",
     embedding_function=embeddings
 )
 
-# Retriever
-retriever = db.as_retriever(search_kwargs={"k": 3})
 
-# Prompt Guardrail
+retriever = db.as_retriever(search_kwargs={"k": 3})
+                            
 prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
@@ -35,10 +34,10 @@ Answer:
 """
 )
 
-# LLM
+
 llm = Ollama(model="llama2")
 
-# QA Chain
+
 qa = RetrievalQA.from_chain_type(
     llm=llm,
     retriever=retriever,
@@ -46,7 +45,7 @@ qa = RetrievalQA.from_chain_type(
     chain_type_kwargs={"prompt": prompt}
 )
 
-# Ask questions
+
 while True:
     query = input("\nAsk a question (or type 'exit'): ")
     if query.lower() == "exit":
