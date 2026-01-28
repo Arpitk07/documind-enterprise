@@ -1,1 +1,0 @@
-This project ingests PDF files, splits them into text chunks, and stores embeddings in ChromaDB using LangChain and Ollama embeddings.

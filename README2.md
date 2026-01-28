@@ -1,2 +1,0 @@
-This project implements a Retrieval-Augmented Generation (RAG) based Corporate SOP Assistant using LangChain, ChromaDB, and Ollama.
- The assistant answers user questions only from the provided documents stored in a vector database.
