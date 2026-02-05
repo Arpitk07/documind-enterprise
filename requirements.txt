@@ -6,9 +6,13 @@ chromadb
 pypdf
 PyMuPDF
 sentence-transformers
+<<<<<<< HEAD
 ollama
 fastapi
 uvicorn[standard]
 pydantic
 python-dotenv
 requests
+=======
+ollama
+>>>>>>> 214cc51bd948713904764eb9ee0276f014c21f8c
