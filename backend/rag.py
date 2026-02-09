@@ -21,11 +21,22 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 class RAGSystem:
     def __init__(self):
         # Load the persisted ChromaDB
-        self.client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-        self.collection = self.client.get_collection(name="documind")
+        try:
+            self.client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
+            self.collection = self.client.get_collection(name="documind")
+            print(f"✓ ChromaDB loaded from {CHROMA_DB_PATH}")
+        except Exception as e:
+            print(f"⚠ Warning: Could not load ChromaDB: {e}")
+            self.client = None
+            self.collection = None
         
         # Load the same embedding model used during ingestion
-        self.model = SentenceTransformer(EMBEDDING_MODEL)
+        try:
+            self.model = SentenceTransformer(EMBEDDING_MODEL)
+            print(f"✓ Embedding model loaded: {EMBEDDING_MODEL}")
+        except Exception as e:
+            print(f"✗ Error loading embedding model: {e}")
+            raise
     
     def retrieve_context(self, question: str, k: int = None):
         """Retrieve top-k relevant chunks from ChromaDB"""
@@ -89,6 +100,9 @@ Answer:"""
     
     def query(self, question: str):
         """Full RAG pipeline: retrieve + generate"""
+        if not self.collection:
+            return "Error: Vector database not initialized. Please ensure chroma_db exists and ingestion has been completed."
+        
         # Step 1: Retrieve relevant context
         results = self.retrieve_context(question)
         
